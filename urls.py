@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from galaxy.views import PlanetFeed
 
 urlpatterns = patterns('',
     url(
@@ -7,18 +8,28 @@ urlpatterns = patterns('',
         name    = 'site_index',
     ),
     url(
-        regex   = r'^page/(?P<page>\w)/$',
+        regex   = r'^.rss$',
+        view    = PlanetFeed(),
+        name    = 'site_index',
+    ),
+    url(
+        regex   = r'^/page/(?P<page>\w)/$',
         view    = 'galaxy.views.post_list',
         name    = 'site_index_paginated',    
     ),
     url(
-        regex   = r'^blog/(?P<slug>[-\w]+)/$',
+        regex   = r'^/blogs/(?P<slug>[-\w]+)/$',
         view    = 'galaxy.views.blog_detail',
         name    = 'blog_detail',
     ),
     url(
-        regex   = r'^blog/$',
+        regex   = r'^/blogs$',
         view    = 'galaxy.views.blog_list',
+        name    = 'blog_list',
+    ),
+    url(
+        regex   = r'^/blogs.opml$',
+        view    = 'galaxy.views.blog_opml',
         name    = 'blog_list',
     ),
     url(

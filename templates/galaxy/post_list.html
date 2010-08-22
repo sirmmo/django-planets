@@ -6,11 +6,13 @@
 {% block content %}
 <div class="post_list">
 	{% for post in object_list %}
-	<div>
+	<div><span class="blog">{{post.blog}}</span >
+<div class="inline">
 		<h3 class="title"><a href="{{ post.get_absolute_url }}">{% autoescape off %}{{ post.title }}{% endautoescape %}</a> by {% if post.author %}{{ post.author }}{% else %}<a href="{{ post.blog.get_absolute_url }}">{{ post.blog.name }}</a>{% endif %}</h3>
 		<p class="date">{{ post.posted|date:"Y F d" }}</p>
 		<p class="body">{% autoescape off %}{{ post.body|removetags:"div script"|safe }}{% endautoescape %}</p>
 	</div>
+</div>
 	{% endfor %}
 </div>
 

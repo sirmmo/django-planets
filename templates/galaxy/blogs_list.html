@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html version="1.0">
+    <head>
+        <title>Nerderie Planet feeds</title>
+    </head>
+    <body>
+{% for planet in planets%}
+        <div title="{{planet.name}}" text="{{planet.name}}">
+{% for blog in planet.blogs.all %}
+            <article
+                text="{{blog.name}}"
+                title="{{blog.name}}"
+                type="rss"
+                xmlUrl="{{blog.feed}}"
+                htmlUrl="{{blog.link}}" > <a href="{{blog.link}}">{{blog.name}}</a> <a href="{{blog.feed}}">RSS</a> </article>
+{% endfor %}
+        </div >
+{% endfor %}
+          </body>
+</html >

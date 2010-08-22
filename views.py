@@ -1,8 +1,11 @@
 from django.shortcuts import render_to_response
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 from django.template import RequestContext
 from django.http import Http404
 from django.views.generic import date_based, list_detail
 from galaxy.models import *
+from django.contrib.syndication.views import Feed
 
 def post_list(request, page=0, planet=""):
     """
@@ -41,7 +44,7 @@ def post_list(request, page=0, planet=""):
     """
     return list_detail.object_list(
         request,
-        queryset = Post.objects.active(),
+        queryset = Post.objects.filter(blog__in = Planet.objects.get(name=planet).blogs.all()),
         paginate_by = 20,
         page = page,
     )
@@ -55,11 +58,19 @@ def blog_list(request,planet=""):
       object_list
         List of blogs in the galaxy.
     """
-    return list_detail.object_list(
-        request,
-        queryset = Blog.objects.filter(active=True),
-        template_name = 'galaxy/blog_list.html',
-    )
+    return  render_to_response('galaxy/blogs_list.html', {'planets':Planet.objects.filter(name=planet)})
+  
+def blog_opml(request,planet=""):
+    """
+    Blog list
+
+    Template: ``galaxy/blogs_opml.xml``
+    Context:
+      object_list
+        List of blogs in the galaxy.
+    """
+    s = render_to_string('galaxy/blogs_opml.xml', {'planets':Planet.objects.filter(name=planet)})
+    return HttpResponse(s, mimetype="text/x-opml")
   
 def blog_detail(request, slug,planet=""):
     """
@@ -102,7 +113,7 @@ def post_archive_year(request, year,planet=""):
         request,
         year = year,
         date_field = 'posted',
-        queryset = Post.objects.active(),
+        queryset = Post.objects.filter(blog__in = Planet.objects.get(name=planet).blogs.all()),
         make_object_list = True,
     )
 
@@ -126,7 +137,7 @@ def post_archive_month(request, year, month,planet=""):
         year = year,
         month = month,
         date_field = 'posted',
-        queryset = Post.objects.active(),
+        queryset = Post.objects.filter(blog__in = Planet.objects.get(name=planet).blogs.all()),
     )
 
 def post_archive_day(request, year, month, day,planet=""):
@@ -152,3 +163,31 @@ def post_archive_day(request, year, month, day,planet=""):
         date_field = 'posted',
         queryset = Post.objects.active(),
     )
+
+from django.shortcuts import get_object_or_404
+
+class PlanetFeed(Feed):
+    title = "Nerderie Planet"
+    description = "Nerderie Selected news"
+
+    def get_object(self, request, planet):
+        return get_object_or_404(Planet, name=planet)
+
+    def title(self, obj):
+        return "Nerderie: News for %s" % obj.name
+
+    def link(self, obj):
+        return obj.get_absolute_url()
+
+    def description(self, obj):
+        return "News recently reported for %s" % obj.name
+
+    def items(self, obj):
+        self.qs = Planet.objects.get(name=obj.name).blogs.all()
+        return Post.objects.filter(blog__in = self.qs ).order_by('-posted')[:5]
+
+    def item_title(self, item):
+        return item.title
+
+    def item_description(self, item):
+        return item.body
