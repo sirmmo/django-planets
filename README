@@ -1,0 +1,7 @@
+Django-planets is a small reusable django app enabling the creation of a whole set of Planet pages with given names. 
+Everything is easily manageable through the admin interface. 
+
+Requires 
+ - BeautifulSoup
+ - django-tagging
+ - feedparser
