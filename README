@@ -13,3 +13,7 @@ Usage:
   
  in INSTALLED_APPS add:
   - 'planets'
+  
+  
+Thanks to: 
+ clintecker's django-galaxy
