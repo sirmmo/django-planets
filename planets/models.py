@@ -17,7 +17,7 @@ class Blog(models.Model):
     owner       = models.CharField(_('owner'), blank=True, max_length=100)
     active      = models.BooleanField(_('active'), default=True)
     bad_dates   = models.BooleanField(_('bad dates'), default=False)
-    bad_tags    = models.BooleanField(_('no tags'), default=True)
+    bad_tags    = models.BooleanField(_('no tags'), default=False)
     override    = models.BooleanField(_('override bad'), default=False)
     etag        = models.CharField(_('etag'), blank=True, max_length=50)
     
@@ -123,7 +123,7 @@ class Post(models.Model):
 		
 class Planet(models.Model):
 	"""A planet with a given set of blogs"""
-	name = models.CharField(_('name'), blank=True, max_length=255)
+	name = models.CharField(_('name'),unique=True, blank=True, max_length=255)
 	blogs = models.ManyToManyField(Blog, related_name="planets")
 	
 	def __unicode__(self):
