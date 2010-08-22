@@ -3,7 +3,7 @@ from tagging.fields import TagField
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
 import datetime
-from debugging import *
+
 from django.template.defaultfilters import slugify
 import feedparser, feedfinder
 from managers import *

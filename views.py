@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.http import Http404
 from django.views.generic import date_based, list_detail
-from galaxy.models import *
+from models import *
 from django.contrib.syndication.views import Feed
 
 def post_list(request, page=0, planet=""):

@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from galaxy.views import PlanetFeed
+from views import PlanetFeed
 
 urlpatterns = patterns('',
     url(

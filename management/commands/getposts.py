@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from galaxy.models import *
+from ...models import Blog, Post
 
 import settings
 class Command(BaseCommand):
