@@ -127,7 +127,7 @@ class Planet(models.Model):
 	blogs = models.ManyToManyField(Blog, related_name="planets")
 	
 	def __unicode__(self):
-		return u"%s:" % (self.name)
+		return u"%s" % (self.name)
 	
         @permalink
         def get_absolute_url(self):
