@@ -5,3 +5,11 @@ Requires
  - BeautifulSoup
  - django-tagging
  - feedparser
+ 
+Usage:
+
+ in urls.py:
+  - (r'^vgames/planet', include('planets.urls'),{'planet':'vgames'}),
+  
+ in INSTALLED_APPS add:
+  - 'planets'
